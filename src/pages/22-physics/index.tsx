@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import * as THREE from 'three'
-import './style.css'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import CANNON from 'cannon'
@@ -7,139 +8,147 @@ import stats from '../../utils/stats'
 import { listenResize, dbClkfullScreen } from '../../utils/utils'
 
 // Canvas
+
 function Index() {
-  const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
+  useEffect(() => {
 
-  // Scene
-  const scene = new THREE.Scene()
+    const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
 
-  // Size
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
+    // Scene
+    const scene = new THREE.Scene()
 
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-  camera.position.set(4, 4, 15)
+    // Size
+    const sizes = {
+      width: window.innerWidth - 340,
+      height: window.innerHeight - 100,
+    }
 
-  // Controls
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  controls.zoomSpeed = 0.3
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    camera.position.set(4, 4, 15)
 
-  /**
-   * Objects
-   */
-  // material
-  const material = new THREE.MeshStandardMaterial()
+    // Controls
+    const controls = new OrbitControls(camera, canvas)
+    controls.enableDamping = true
+    controls.zoomSpeed = 0.3
 
-  // sphere
-  const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), material)
-  sphere.position.setY(1)
-  sphere.castShadow = true
-  scene.add(sphere)
+    /**
+     * Objects
+     */
+    // material
+    const material = new THREE.MeshStandardMaterial()
 
-  // plane
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(15, 15), material)
-  plane.rotateX(-Math.PI / 2)
-  plane.receiveShadow = true
-  scene.add(plane)
+    // sphere
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), material)
+    sphere.position.setY(1)
+    sphere.castShadow = true
+    scene.add(sphere)
 
-  /**
-   * Light
-   */
-  const directionLight = new THREE.DirectionalLight()
-  directionLight.castShadow = true
-  directionLight.position.set(5, 5, 6)
-  const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
-  scene.add(ambientLight, directionLight)
+    // plane
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(15, 15), material)
+    plane.rotateX(-Math.PI / 2)
+    plane.receiveShadow = true
+    scene.add(plane)
 
-  const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
-  directionLightHelper.visible = false
-  scene.add(directionLightHelper)
+    /**
+     * Light
+     */
+    const directionLight = new THREE.DirectionalLight()
+    directionLight.castShadow = true
+    directionLight.position.set(5, 5, 6)
+    const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
+    scene.add(ambientLight, directionLight)
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    // antialias: true,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.shadowMap.enabled = true
+    const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
+    directionLightHelper.visible = false
+    scene.add(directionLightHelper)
 
-  /**
-   * Physics
-   */
-  const world = new CANNON.World()
-  world.gravity.set(0, -9.82, 0)
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      // antialias: true,
+    })
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.shadowMap.enabled = true
 
-  const defaultMaterial = new CANNON.Material('default')
-  const defaultContactMaterial = new CANNON.ContactMaterial(defaultMaterial, defaultMaterial, {
-    friction: 0.1,
-    restitution: 0.7,
-  })
-  world.addContactMaterial(defaultContactMaterial)
+    /**
+     * Physics
+     */
+    const world = new CANNON.World()
+    world.gravity.set(0, -9.82, 0)
 
-  const sphereShape = new CANNON.Sphere(1)
-  const sphereBody = new CANNON.Body({
-    mass: 1,
-    position: new CANNON.Vec3(0, 4, 0),
-    shape: sphereShape,
-    material: defaultMaterial,
-  })
-  world.addBody(sphereBody)
+    const defaultMaterial = new CANNON.Material('default')
+    const defaultContactMaterial = new CANNON.ContactMaterial(defaultMaterial, defaultMaterial, {
+      friction: 0.1,
+      restitution: 0.7,
+    })
+    world.addContactMaterial(defaultContactMaterial)
 
-  // floor
-  const floorShape = new CANNON.Plane()
-  const floorBody = new CANNON.Body()
-  floorBody.mass = 0
-  floorBody.material = defaultMaterial
-  floorBody.addShape(floorShape)
-  world.addBody(floorBody)
-  floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
+    const sphereShape = new CANNON.Sphere(1)
+    const sphereBody = new CANNON.Body({
+      mass: 1,
+      position: new CANNON.Vec3(0, 4, 0),
+      shape: sphereShape,
+      material: defaultMaterial,
+    })
+    world.addBody(sphereBody)
 
-  // Animations
-  const clock = new THREE.Clock()
-  let oldElapsedTime = 0
-  const tick = () => {
-    stats.begin()
-    controls.update()
+    // floor
+    const floorShape = new CANNON.Plane()
+    const floorBody = new CANNON.Body()
+    floorBody.mass = 0
+    floorBody.material = defaultMaterial
+    floorBody.addShape(floorShape)
+    world.addBody(floorBody)
+    floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
 
-    const elapsedTime = clock.getElapsedTime()
-    const deltaTime = elapsedTime - oldElapsedTime
-    oldElapsedTime = elapsedTime
+    // Animations
+    const clock = new THREE.Clock()
+    let oldElapsedTime = 0
+    const tick = () => {
+      stats.begin()
+      controls.update()
 
-    world.step(1 / 60, deltaTime, 3)
+      const elapsedTime = clock.getElapsedTime()
+      const deltaTime = elapsedTime - oldElapsedTime
+      oldElapsedTime = elapsedTime
 
-    // @ts-ignore
-    sphere.position.copy(sphereBody.position)
+      world.step(1 / 60, deltaTime, 3)
 
-    // Render
-    renderer.render(scene, camera)
-    stats.end()
-    requestAnimationFrame(tick)
-  }
+      // @ts-ignore
+      sphere.position.copy(sphereBody.position)
 
-  tick()
+      // Render
+      renderer.render(scene, camera)
+      stats.end()
+      requestAnimationFrame(tick)
+    }
 
-  listenResize(sizes, camera, renderer)
-  dbClkfullScreen(document.documentElement)
+    tick()
 
-  /**
-   * Debug
-   */
-  const gui = new dat.GUI()
-  gui.add(controls, 'autoRotate')
-  gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
-  gui.add(material, 'wireframe')
-  gui.add(directionLightHelper, 'visible').name('directionLightHelper visible')
-  const guiObj = {
-    drop() {
-      sphereBody.position = new CANNON.Vec3(0, 4, 0)
-    },
-  }
-  gui.add(guiObj, 'drop')
-  return <></>
+    listenResize(sizes, camera, renderer)
+    dbClkfullScreen(document.documentElement)
+
+    /**
+     * Debug
+     */
+    const gui = new dat.GUI()
+    gui.add(controls, 'autoRotate')
+    gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
+    gui.add(material, 'wireframe')
+    gui.add(directionLightHelper, 'visible').name('directionLightHelper visible')
+    const guiObj = {
+      drop() {
+        sphereBody.position = new CANNON.Vec3(0, 4, 0)
+      },
+    }
+    gui.add(guiObj, 'drop')
+
+
+  }, [])
+
+  return <canvas id="mainCanvas" className="webgl"></canvas>
+
 }
 export default Index

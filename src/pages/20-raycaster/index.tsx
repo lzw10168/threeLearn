@@ -1,142 +1,151 @@
+import { useEffect } from 'react'
 import * as THREE from 'three'
-import './style.css'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import stats from '../../utils/stats'
 import { listenResize, dbClkfullScreen } from '../../utils/utils'
 
 // Canvas
+
 function Index() {
-  const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
+  useEffect(() => {
 
-  // Scene
-  const scene = new THREE.Scene()
+    const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
 
-  // Size
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
+    // Scene
+    const scene = new THREE.Scene()
 
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-  camera.position.set(0, 0, 28)
+    // Size
+    const sizes = {
+      width: window.innerWidth - 340,
+      height: window.innerHeight - 100,
+    }
 
-  // Controls
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  controls.zoomSpeed = 0.3
-  // controls.autoRotateSpeed = 1
-  controls.autoRotate = true
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    camera.position.set(0, 0, 28)
 
-  /**
-   * Objects
-   */
-  const object1 = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ color: '#B71C1C' })
-  )
-  object1.position.setX(-4)
-  const object2 = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ color: '#B71C1C' })
-  )
-  const object3 = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ color: '#B71C1C' })
-  )
-  object3.position.setX(4)
+    // Controls
+    const controls = new OrbitControls(camera, canvas)
+    controls.enableDamping = true
+    controls.zoomSpeed = 0.3
+    // controls.autoRotateSpeed = 1
+    controls.autoRotate = true
 
-  scene.add(object1, object2, object3)
+    /**
+     * Objects
+     */
+    const object1 = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 32, 32),
+      new THREE.MeshStandardMaterial({ color: '#B71C1C' })
+    )
+    object1.position.setX(-4)
+    const object2 = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 32, 32),
+      new THREE.MeshStandardMaterial({ color: '#B71C1C' })
+    )
+    const object3 = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 32, 32),
+      new THREE.MeshStandardMaterial({ color: '#B71C1C' })
+    )
+    object3.position.setX(4)
 
-  const cube = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), new THREE.MeshStandardMaterial())
-  cube.position.setY(-8)
-  scene.add(cube)
+    scene.add(object1, object2, object3)
 
-  const directionLight = new THREE.DirectionalLight()
-  directionLight.position.set(1, 1, 1)
-  const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
-  scene.add(ambientLight, directionLight)
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), new THREE.MeshStandardMaterial())
+    cube.position.setY(-8)
+    scene.add(cube)
 
-  const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
-  scene.add(directionLightHelper)
+    const directionLight = new THREE.DirectionalLight()
+    directionLight.position.set(1, 1, 1)
+    const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
+    scene.add(ambientLight, directionLight)
 
-  /**
-   * Raycaster
-   */
-  const raycaster = new THREE.Raycaster()
-  const rayOrigin = new THREE.Vector3(-6, 0, 0)
-  const rayDirections = new THREE.Vector3(10, 0, 0)
-  rayDirections.normalize()
-  raycaster.set(rayOrigin, rayDirections)
+    const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
+    scene.add(directionLightHelper)
 
-  // const intersect = raycaster.intersectObject(object1)
-  // const intersects = raycaster.intersectObjects([object1, object2, object3])
+    /**
+     * Raycaster
+     */
+    const raycaster = new THREE.Raycaster()
+    const rayOrigin = new THREE.Vector3(-6, 0, 0)
+    const rayDirections = new THREE.Vector3(10, 0, 0)
+    rayDirections.normalize()
+    raycaster.set(rayOrigin, rayDirections)
 
-  // console.log(intersect)
-  // console.log(intersects)
+    // const intersect = raycaster.intersectObject(object1)
+    // const intersects = raycaster.intersectObjects([object1, object2, object3])
 
-  const arrowHelper = new THREE.ArrowHelper(
-    raycaster.ray.direction,
-    raycaster.ray.origin,
-    15,
-    0xff0000,
-    1,
-    0.5
-  )
-  scene.add(arrowHelper)
+    // console.log(intersect)
+    // console.log(intersects)
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const arrowHelper = new THREE.ArrowHelper(
+      raycaster.ray.direction,
+      raycaster.ray.origin,
+      15,
+      0xff0000,
+      1,
+      0.5
+    )
+    scene.add(arrowHelper)
 
-  listenResize(sizes, camera, renderer)
-  dbClkfullScreen(document.body)
-
-  // Animations
-  const clock = new THREE.Clock()
-  const tick = () => {
-    stats.begin()
-
-    const elapsedTime = clock.getElapsedTime()
-    object1.position.setY(Math.sin(elapsedTime * 2) * 2)
-    object2.position.setY(Math.sin(elapsedTime * 1.5) * 2)
-    object3.position.setY(Math.sin(elapsedTime * 3) * 2)
-
-    const objectsToTest = [object1, object2, object3]
-    const intersects = raycaster.intersectObjects(objectsToTest)
-
-    objectsToTest.forEach((item) => {
-      item.material.color.set('#B71C1C')
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
     })
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    intersects.forEach((item: any) => {
-      item.object.material.color.set('#F9A825')
-    })
+    listenResize(sizes, camera, renderer)
+    dbClkfullScreen(document.body)
 
-    controls.update()
+    // Animations
+    const clock = new THREE.Clock()
+    const tick = () => {
+      stats.begin()
 
-    // Render
-    renderer.render(scene, camera)
-    stats.end()
-    requestAnimationFrame(tick)
-  }
+      const elapsedTime = clock.getElapsedTime()
+      object1.position.setY(Math.sin(elapsedTime * 2) * 2)
+      object2.position.setY(Math.sin(elapsedTime * 1.5) * 2)
+      object3.position.setY(Math.sin(elapsedTime * 3) * 2)
 
-  tick()
+      const objectsToTest = [object1, object2, object3]
+      const intersects = raycaster.intersectObjects(objectsToTest)
 
-  /**
-   * Debug
-   */
-  const gui = new dat.GUI()
+      objectsToTest.forEach((item) => {
+        item.material.color.set('#B71C1C')
+      })
 
-  gui.add(controls, 'autoRotate')
-  gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
-  gui.add(arrowHelper, 'visible').name('arrowHelper visible')
-  gui.add(directionLightHelper, 'visible').name('directionLightHelper visible')
-  return <></>
+      intersects.forEach((item: any) => {
+        item.object.material.color.set('#F9A825')
+      })
+
+      controls.update()
+
+      // Render
+      renderer.render(scene, camera)
+      stats.end()
+      requestAnimationFrame(tick)
+    }
+
+    tick()
+
+    /**
+     * Debug
+     */
+    const gui = new dat.GUI()
+
+    gui.add(controls, 'autoRotate')
+    gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
+    gui.add(arrowHelper, 'visible').name('arrowHelper visible')
+    gui.add(directionLightHelper, 'visible').name('directionLightHelper visible')
+
+
+  }, [])
+
+  return <canvas id="mainCanvas" className="webgl"></canvas>
+
 }
 export default Index

@@ -18,8 +18,8 @@ export const listenResize = (
 ) => {
   window.addEventListener('resize', () => {
     // update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
+    sizes.width = window.innerWidth - 340
+    sizes.height = window.innerHeight - 100
 
     // update camera
     camera.aspect = sizes.width / sizes.height

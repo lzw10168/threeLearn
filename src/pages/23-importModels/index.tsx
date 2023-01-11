@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import * as THREE from 'three'
-import './style.css'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -8,135 +9,143 @@ import stats from '../../utils/stats'
 import { listenResize } from '../../utils/utils'
 
 // Canvas
+
 function Index() {
-  const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
+  useEffect(() => {
 
-  // Scene
-  const scene = new THREE.Scene()
+    const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
 
-  // Gui
-  const gui = new dat.GUI()
+    // Scene
+    const scene = new THREE.Scene()
 
-  // Size
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
+    // Gui
+    const gui = new dat.GUI()
 
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-  camera.position.set(4, 4, 6)
+    // Size
+    const sizes = {
+      width: window.innerWidth - 340,
+      height: window.innerHeight - 100,
+    }
 
-  // Controls
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  controls.zoomSpeed = 0.3
-  controls.target = new THREE.Vector3(0, 3, 0)
-  controls.autoRotate = true
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    camera.position.set(4, 4, 6)
 
-  /**
-   * Objects
-   */
-  // plane
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(15, 15),
-    new THREE.MeshStandardMaterial({
-      color: '#607D8B',
-    }),
-  )
-  plane.rotateX(-Math.PI / 2)
-  plane.receiveShadow = true
-  scene.add(plane)
+    // Controls
+    const controls = new OrbitControls(camera, canvas)
+    controls.enableDamping = true
+    controls.zoomSpeed = 0.3
+    controls.target = new THREE.Vector3(0, 3, 0)
+    controls.autoRotate = true
 
-  /**
-   * Models
-   */
-  const gltfLoader = new GLTFLoader()
-  // draco
-  // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-  const dracoLoader = new DRACOLoader()
-  // Specify path to a folder containing WASM/JS decoding libraries.
-  dracoLoader.setDecoderPath('../assets/draco/')
-  // Optional: Pre-fetch Draco WASM/JS module.
-  dracoLoader.preload()
-  gltfLoader.setDRACOLoader(dracoLoader)
-  gltfLoader.load(
-    // '../assets/models/Duck/glTF/Duck.gltf',
-    // '../assets/models/Duck/glTF-Binary/Duck.glb',
-    '../assets/models/Duck/glTF-Draco/Duck.gltf',
-    // '../assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
-    (gltf) => {
-      console.log('success')
-      console.log(gltf)
-      // gltf.scene.scale.set(10, 10, 10)
-      // scene.add(gltf.scene)
-      const duck = gltf.scene.children[0]
-      duck.children[1].castShadow = true
-      duck.position.set(0, -0.1, 0)
-      scene.add(duck)
-    },
-    (progress) => {
-      console.log('progress')
-      console.log(progress)
-    },
-    (error) => {
-      console.log('error')
-      console.log(error)
-    },
-  )
+    /**
+     * Objects
+     */
+    // plane
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(15, 15),
+      new THREE.MeshStandardMaterial({
+        color: '#607D8B',
+      }),
+    )
+    plane.rotateX(-Math.PI / 2)
+    plane.receiveShadow = true
+    scene.add(plane)
 
-  /**
-   * Light
-   */
-  const directionLight = new THREE.DirectionalLight()
-  directionLight.castShadow = true
-  directionLight.position.set(5, 5, 6)
-  directionLight.shadow.camera.near = 1
-  directionLight.shadow.camera.far = 20
-  directionLight.shadow.camera.top = 10
-  directionLight.shadow.camera.right = 10
-  directionLight.shadow.camera.bottom = -10
-  directionLight.shadow.camera.left = -10
+    /**
+     * Models
+     */
+    const gltfLoader = new GLTFLoader()
+    // draco
+    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
+    const dracoLoader = new DRACOLoader()
+    // Specify path to a folder containing WASM/JS decoding libraries.
+    dracoLoader.setDecoderPath('../../assets/draco/')
+    // Optional: Pre-fetch Draco WASM/JS module.
+    dracoLoader.preload()
+    gltfLoader.setDRACOLoader(dracoLoader)
+    gltfLoader.load(
+      // '../../assets/models/Duck/glTF/Duck.gltf',
+      // '../../assets/models/Duck/glTF-Binary/Duck.glb',
+      '../../assets/models/Duck/glTF-Draco/Duck.gltf',
+      // '../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
+      (gltf) => {
+        console.log('success')
+        console.log(gltf)
+        // gltf.scene.scale.set(10, 10, 10)
+        // scene.add(gltf.scene)
+        const duck = gltf.scene.children[0]
+        duck.children[1].castShadow = true
+        duck.position.set(0, -0.1, 0)
+        scene.add(duck)
+      },
+      (progress) => {
+        console.log('progress')
+        console.log(progress)
+      },
+      (error) => {
+        console.log('error')
+        console.log(error)
+      },
+    )
 
-  const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
-  directionLightHelper.visible = false
-  scene.add(directionLightHelper)
+    /**
+     * Light
+     */
+    const directionLight = new THREE.DirectionalLight()
+    directionLight.castShadow = true
+    directionLight.position.set(5, 5, 6)
+    directionLight.shadow.camera.near = 1
+    directionLight.shadow.camera.far = 20
+    directionLight.shadow.camera.top = 10
+    directionLight.shadow.camera.right = 10
+    directionLight.shadow.camera.bottom = -10
+    directionLight.shadow.camera.left = -10
 
-  const directionalLightCameraHelper = new THREE.CameraHelper(directionLight.shadow.camera)
-  directionalLightCameraHelper.visible = false
-  scene.add(directionalLightCameraHelper)
+    const directionLightHelper = new THREE.DirectionalLightHelper(directionLight, 2)
+    directionLightHelper.visible = false
+    scene.add(directionLightHelper)
 
-  const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
-  scene.add(ambientLight, directionLight)
+    const directionalLightCameraHelper = new THREE.CameraHelper(directionLight.shadow.camera)
+    directionalLightCameraHelper.visible = false
+    scene.add(directionalLightCameraHelper)
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    const ambientLight = new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.3)
+    scene.add(ambientLight, directionLight)
 
-  // Animations
-  const tick = () => {
-    stats.begin()
-    controls.update()
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+    })
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-    // Render
-    renderer.render(scene, camera)
-    stats.end()
-    requestAnimationFrame(tick)
-  }
+    // Animations
+    const tick = () => {
+      stats.begin()
+      controls.update()
 
-  tick()
+      // Render
+      renderer.render(scene, camera)
+      stats.end()
+      requestAnimationFrame(tick)
+    }
 
-  listenResize(sizes, camera, renderer)
+    tick()
 
-  gui.add(directionLightHelper, 'visible').name('lightHelper visible')
-  gui.add(directionalLightCameraHelper, 'visible').name('lightCameraHelper visible')
-  gui.add(controls, 'autoRotate')
-  return <></>
+    listenResize(sizes, camera, renderer)
+
+    gui.add(directionLightHelper, 'visible').name('lightHelper visible')
+    gui.add(directionalLightCameraHelper, 'visible').name('lightCameraHelper visible')
+    gui.add(controls, 'autoRotate')
+
+
+  }, [])
+
+  return <canvas id="mainCanvas" className="webgl"></canvas>
+
 }
 export default Index

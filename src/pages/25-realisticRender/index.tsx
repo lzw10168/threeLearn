@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 /* eslint-disable no-param-reassign */
 import * as THREE from 'three'
-import './style.css'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -8,170 +9,178 @@ import stats from '../../utils/stats'
 import { listenResize } from '../../utils/utils'
 
 // Canvas
+
 function Index() {
-  const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
+  useEffect(() => {
 
-  // Scene
-  const scene = new THREE.Scene()
+    const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
 
-  // Gui
-  const gui = new dat.GUI()
-  const debugObject = {
-    envMapIntensity: 1.5,
-  }
+    // Scene
+    const scene = new THREE.Scene()
 
-  // Size
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
+    // Gui
+    const gui = new dat.GUI()
+    const debugObject = {
+      envMapIntensity: 1.5,
+    }
 
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-  camera.position.set(8, 2, -4)
+    // Size
+    const sizes = {
+      width: window.innerWidth - 340,
+      height: window.innerHeight - 100,
+    }
 
-  // Controls
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  controls.zoomSpeed = 0.3
-  // controls.target = new THREE.Vector3(0, 3, 0)
-  // controls.autoRotate = true
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    camera.position.set(8, 2, -4)
 
-  /**
-   * Objects
-   */
-  // const testSphere = new THREE.Mesh(
-  //   new THREE.SphereGeometry(1, 32, 32),
-  //   new THREE.MeshStandardMaterial()
-  // )
-  // scene.add(testSphere)
+    // Controls
+    const controls = new OrbitControls(camera, canvas)
+    controls.enableDamping = true
+    controls.zoomSpeed = 0.3
+    // controls.target = new THREE.Vector3(0, 3, 0)
+    // controls.autoRotate = true
 
-  /**
-   * Loaders
-   */
-  const gltfLoader = new GLTFLoader()
-  const cubeTextureLoader = new THREE.CubeTextureLoader()
+    /**
+     * Objects
+     */
+    // const testSphere = new THREE.Mesh(
+    //   new THREE.SphereGeometry(1, 32, 32),
+    //   new THREE.MeshStandardMaterial()
+    // )
+    // scene.add(testSphere)
 
-  /**
-   * Environment map
-   */
-  const environmentMap = cubeTextureLoader.load([
-    '../assets/textures/environmentMaps/3/px.jpg',
-    '../assets/textures/environmentMaps/3/nx.jpg',
-    '../assets/textures/environmentMaps/3/py.jpg',
-    '../assets/textures/environmentMaps/3/ny.jpg',
-    '../assets/textures/environmentMaps/3/pz.jpg',
-    '../assets/textures/environmentMaps/3/nz.jpg',
-  ])
+    /**
+     * Loaders
+     */
+    const gltfLoader = new GLTFLoader()
+    const cubeTextureLoader = new THREE.CubeTextureLoader()
 
-  environmentMap.encoding = THREE.sRGBEncoding
+    /**
+     * Environment map
+     */
+    const environmentMap = cubeTextureLoader.load([
+      '../../assets/textures/environmentMaps/3/px.jpg',
+      '../../assets/textures/environmentMaps/3/nx.jpg',
+      '../../assets/textures/environmentMaps/3/py.jpg',
+      '../../assets/textures/environmentMaps/3/ny.jpg',
+      '../../assets/textures/environmentMaps/3/pz.jpg',
+      '../../assets/textures/environmentMaps/3/nz.jpg',
+    ])
 
-  scene.background = environmentMap
-  // scene.environment = environmentMap
+    environmentMap.encoding = THREE.sRGBEncoding
 
-  /**
-   * Update all materials
-   */
-  const updateAllMaterials = () => {
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-        console.log(child)
-        child.material.envMap = environmentMap
-        child.material.envMapIntensity = debugObject.envMapIntensity
-        child.castShadow = true
-        child.receiveShadow = true
-      }
+    scene.background = environmentMap
+    // scene.environment = environmentMap
+
+    /**
+     * Update all materials
+     */
+    const updateAllMaterials = () => {
+      scene.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+          console.log(child)
+          child.material.envMap = environmentMap
+          child.material.envMapIntensity = debugObject.envMapIntensity
+          child.castShadow = true
+          child.receiveShadow = true
+        }
+      })
+    }
+
+    gui.add(debugObject, 'envMapIntensity').min(0).max(10).step(0.001)
+      .onChange(updateAllMaterials)
+
+    /**
+     * Models
+     */
+    gltfLoader.load('../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
+      gltf.scene.scale.set(8, 8, 8)
+      gltf.scene.position.set(0, -3.4, 0)
+      gltf.scene.rotation.set(0, Math.PI * 0.5, 0)
+      gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001)
+        .name('rotation')
+      scene.add(gltf.scene)
+      updateAllMaterials()
     })
-  }
 
-  gui.add(debugObject, 'envMapIntensity').min(0).max(10).step(0.001)
-    .onChange(updateAllMaterials)
+    /**
+     * Light
+     */
+    const directionLight = new THREE.DirectionalLight('#ffffff', 2.8)
+    directionLight.position.set(0.25, 3, -2.25)
+    scene.add(directionLight)
 
-  /**
-   * Models
-   */
-  gltfLoader.load('../assets/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
-    gltf.scene.scale.set(8, 8, 8)
-    gltf.scene.position.set(0, -3.4, 0)
-    gltf.scene.rotation.set(0, Math.PI * 0.5, 0)
-    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001)
-      .name('rotation')
-    scene.add(gltf.scene)
-    updateAllMaterials()
-  })
+    gui.add(directionLight, 'intensity').min(0).max(10).step(0.001)
+      .name('lightIntensity')
+    gui.add(directionLight.position, 'x').min(-5).max(5).step(0.001)
+      .name('lightX')
+    gui.add(directionLight.position, 'y').min(-5).max(5).step(0.001)
+      .name('lightY')
+    gui.add(directionLight.position, 'z').min(-5).max(5).step(0.001)
+      .name('lightZ')
+    directionLight.castShadow = true
 
-  /**
-   * Light
-   */
-  const directionLight = new THREE.DirectionalLight('#ffffff', 2.8)
-  directionLight.position.set(0.25, 3, -2.25)
-  scene.add(directionLight)
+    const directionalLightCameraHelper = new THREE.CameraHelper(directionLight.shadow.camera)
+    scene.add(directionalLightCameraHelper)
+    directionalLightCameraHelper.visible = false
 
-  gui.add(directionLight, 'intensity').min(0).max(10).step(0.001)
-    .name('lightIntensity')
-  gui.add(directionLight.position, 'x').min(-5).max(5).step(0.001)
-    .name('lightX')
-  gui.add(directionLight.position, 'y').min(-5).max(5).step(0.001)
-    .name('lightY')
-  gui.add(directionLight.position, 'z').min(-5).max(5).step(0.001)
-    .name('lightZ')
-  directionLight.castShadow = true
+    directionLight.shadow.camera.far = 15
+    directionLight.shadow.mapSize.set(1024, 1024)
 
-  const directionalLightCameraHelper = new THREE.CameraHelper(directionLight.shadow.camera)
-  scene.add(directionalLightCameraHelper)
-  directionalLightCameraHelper.visible = false
+    /** axesHelper */
+    const axesHelper = new THREE.AxesHelper(5)
+    scene.add(axesHelper)
+    axesHelper.visible = false
 
-  directionLight.shadow.camera.far = 15
-  directionLight.shadow.mapSize.set(1024, 1024)
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+    })
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.physicallyCorrectLights = true
+    renderer.outputEncoding = THREE.sRGBEncoding
+    renderer.toneMapping = THREE.ReinhardToneMapping
+    renderer.toneMappingExposure = 2.5
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-  /** axesHelper */
-  const axesHelper = new THREE.AxesHelper(5)
-  scene.add(axesHelper)
-  axesHelper.visible = false
+    gui.add(renderer, 'toneMapping', {
+      No: THREE.NoToneMapping,
+      Linear: THREE.LinearToneMapping,
+      Reinhard: THREE.ReinhardToneMapping,
+      Cineon: THREE.CineonToneMapping,
+      ACESFilmic: THREE.ACESFilmicToneMapping,
+    })
+    gui.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001)
+    gui.add(controls, 'autoRotate')
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.physicallyCorrectLights = true
-  renderer.outputEncoding = THREE.sRGBEncoding
-  renderer.toneMapping = THREE.ReinhardToneMapping
-  renderer.toneMappingExposure = 2.5
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    // Animations
+    const tick = () => {
+      stats.begin()
+      controls.update()
 
-  gui.add(renderer, 'toneMapping', {
-    No: THREE.NoToneMapping,
-    Linear: THREE.LinearToneMapping,
-    Reinhard: THREE.ReinhardToneMapping,
-    Cineon: THREE.CineonToneMapping,
-    ACESFilmic: THREE.ACESFilmicToneMapping,
-  })
-  gui.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001)
-  gui.add(controls, 'autoRotate')
+      // Render
+      renderer.render(scene, camera)
+      stats.end()
+      requestAnimationFrame(tick)
+    }
 
-  // Animations
-  const tick = () => {
-    stats.begin()
-    controls.update()
+    tick()
 
-    // Render
-    renderer.render(scene, camera)
-    stats.end()
-    requestAnimationFrame(tick)
-  }
+    listenResize(sizes, camera, renderer)
 
-  tick()
+    // gui.add(directionLightHelper, 'visible').name('lightHelper visible')
+    gui.add(directionalLightCameraHelper, 'visible').name('lightCameraHelper visible')
+    gui.add(axesHelper, 'visible').name('axesHelper visible')
+    gui.add(controls, 'autoRotate')
 
-  listenResize(sizes, camera, renderer)
 
-  // gui.add(directionLightHelper, 'visible').name('lightHelper visible')
-  gui.add(directionalLightCameraHelper, 'visible').name('lightCameraHelper visible')
-  gui.add(axesHelper, 'visible').name('axesHelper visible')
-  gui.add(controls, 'autoRotate')
-  return <></>
+  }, [])
+
+  return <canvas id="mainCanvas" className="webgl"></canvas>
+
 }
 export default Index

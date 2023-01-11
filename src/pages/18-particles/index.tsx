@@ -1,95 +1,104 @@
+import { useEffect } from 'react'
 import * as THREE from 'three'
-import './style.css'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import stats from '../../utils/stats'
 import { listenResize, dbClkfullScreen } from '../../utils/utils'
 
 // Canvas
+
 function Index() {
-  const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
+  useEffect(() => {
 
-  // Scene
-  const scene = new THREE.Scene()
+    const canvas = document.querySelector('#mainCanvas') as HTMLCanvasElement
 
-  /**
-   * Objects
-   */
-  // Material
-  const material = new THREE.MeshStandardMaterial()
-  material.metalness = 0
-  material.roughness = 0.4
+    // Scene
+    const scene = new THREE.Scene()
 
-  /**
-   * Particles
-   */
-  // geometry
-  const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
+    /**
+     * Objects
+     */
+    // Material
+    const material = new THREE.MeshStandardMaterial()
+    material.metalness = 0
+    material.roughness = 0.4
 
-  // material
-  const pointMaterial = new THREE.PointsMaterial({
-    size: 0.02,
-    sizeAttenuation: true,
-  })
+    /**
+     * Particles
+     */
+    // geometry
+    const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
 
-  const particles = new THREE.Points(sphereGeometry, pointMaterial)
-  scene.add(particles)
+    // material
+    const pointMaterial = new THREE.PointsMaterial({
+      size: 0.02,
+      sizeAttenuation: true,
+    })
 
-  /**
-   * Lights
-   */
-  const ambientLight = new THREE.AmbientLight('#ffffff', 0.4)
-  scene.add(ambientLight)
+    const particles = new THREE.Points(sphereGeometry, pointMaterial)
+    scene.add(particles)
 
-  // Size
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
+    /**
+     * Lights
+     */
+    const ambientLight = new THREE.AmbientLight('#ffffff', 0.4)
+    scene.add(ambientLight)
 
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-  camera.position.set(2, 1.8, 2)
+    // Size
+    const sizes = {
+      width: window.innerWidth - 340,
+      height: window.innerHeight - 100,
+    }
 
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  // controls.autoRotateSpeed = 0.2
-  controls.zoomSpeed = 0.3
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    camera.position.set(2, 1.8, 2)
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const controls = new OrbitControls(camera, canvas)
+    controls.enableDamping = true
+    // controls.autoRotateSpeed = 0.2
+    controls.zoomSpeed = 0.3
 
-  listenResize(sizes, camera, renderer)
-  dbClkfullScreen(document.body)
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+    })
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-  // Animations
-  const tick = () => {
-    stats.begin()
+    listenResize(sizes, camera, renderer)
+    dbClkfullScreen(document.body)
 
-    controls.update()
-    pointMaterial.needsUpdate = true
+    // Animations
+    const tick = () => {
+      stats.begin()
 
-    // Render
-    renderer.render(scene, camera)
-    stats.end()
-    requestAnimationFrame(tick)
-  }
+      controls.update()
+      pointMaterial.needsUpdate = true
 
-  tick()
+      // Render
+      renderer.render(scene, camera)
+      stats.end()
+      requestAnimationFrame(tick)
+    }
 
-  /**
-   * Debug
-   */
-  const gui = new dat.GUI()
+    tick()
 
-  gui.add(controls, 'autoRotate')
-  gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
-  gui.add(pointMaterial, 'size', 0.01, 0.1, 0.001)
-  gui.add(pointMaterial, 'sizeAttenuation')
-  return <></>
+    /**
+     * Debug
+     */
+    const gui = new dat.GUI()
+
+    gui.add(controls, 'autoRotate')
+    gui.add(controls, 'autoRotateSpeed', 0.1, 10, 0.01)
+    gui.add(pointMaterial, 'size', 0.01, 0.1, 0.001)
+    gui.add(pointMaterial, 'sizeAttenuation')
+
+
+  }, [])
+
+  return <canvas id="mainCanvas" className="webgl"></canvas>
+
 }
 export default Index
