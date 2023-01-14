@@ -100,7 +100,7 @@ function Index() {
     /**
      * Models
      */
-    gltfLoader.load('../../assets/myModels/hamburger.glb', (gltf) => {
+    gltfLoader.load(require('../../assets/myModels/hamburger.glb'), (gltf) => {
       gltf.scene.scale.set(0.4, 0.4, 0.4)
       gltf.scene.position.set(0, -2.5, 0)
       gltf.scene.rotation.set(0, Math.PI * 0.5, 0)

@@ -19,7 +19,7 @@ function Index() {
 
     // Texture
     const textureLoader = new THREE.TextureLoader()
-    const bakedShadow = textureLoader.load('../../assets/textures/bakedShadow.jpg')
+    const bakedShadow = textureLoader.load(require('../../assets/textures/bakedShadow.jpg'))
 
     /**
      * Objects

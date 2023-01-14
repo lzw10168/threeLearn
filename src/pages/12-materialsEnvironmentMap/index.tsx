@@ -20,17 +20,17 @@ function Index() {
      * Textures
      */
     const textureLoader = new THREE.TextureLoader()
-    const doorColorTexture = textureLoader.load('../../assets/textures/door/color.jpg')
-    const doorAlphaTexture = textureLoader.load('../../assets/textures/door/alpha.jpg')
-    const doorAmbientOcclusionTexture = textureLoader.load(
-      '../../assets/textures/door/ambientOcclusion.jpg'
+    const doorColorTexture = textureLoader.load(require('../../assets/textures/door/color.jpg'))
+    const doorAlphaTexture = textureLoader.load(require('../../assets/textures/door/alpha.jpg'))
+    const doorAmbientOcclusionTexture = textureLoader.load(require(
+      '../../assets/textures/door/ambientOcclusion.jpg')
     )
-    const doorHeightTexture = textureLoader.load('../../assets/textures/door/height.jpg')
-    const doorMetalnessTexture = textureLoader.load('../../assets/textures/door/metalness.jpg')
-    const doorNormalTexture = textureLoader.load('../../assets/textures/door/normal.jpg')
-    const doorRoughnessTexture = textureLoader.load('../../assets/textures/door/roughness.jpg')
-    const matcapTexture = textureLoader.load('../../assets/textures/matcaps/3.png')
-    const gradientTexture = textureLoader.load('../../assets/textures/gradients/5.jpg')
+    const doorHeightTexture = textureLoader.load(require('../../assets/textures/door/height.jpg'))
+    const doorMetalnessTexture = textureLoader.load(require('../../assets/textures/door/metalness.jpg'))
+    const doorNormalTexture = textureLoader.load(require('../../assets/textures/door/normal.jpg'))
+    const doorRoughnessTexture = textureLoader.load(require('../../assets/textures/door/roughness.jpg'))
+    const matcapTexture = textureLoader.load(require('../../assets/textures/matcaps/3.png'))
+    const gradientTexture = textureLoader.load(require('../../assets/textures/gradients/5.jpg'))
 
     const envMapTexture = new THREE.CubeTextureLoader()
       .setPath('../../assets/textures/environmentMaps/4/')

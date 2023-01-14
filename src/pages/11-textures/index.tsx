@@ -34,12 +34,12 @@ function Index() {
     }
 
     const textureLoader = new THREE.TextureLoader(loadingManager)
-    const colorTexture = textureLoader.load('../../assets/textures/door/color.jpg')
-    // const colorTexture = textureLoader.load('https://gw.alicdn.com/imgextra/i4/O1CN01Ow2oCS1m9kEL8DTpD_!!6000000004912-2-tps-16-16.png')
-    // const alphaTexture = textureLoader.load('../../assets/textures/door/alpha.jpg')
-    // const ambientOcclusionTexture = textureLoader.load('../../assets/textures/door/ambientOcclusion.jpg')
-    // const heightTexture = textureLoader.load('../../assets/textures/door/height.jpg')
-    // const metalnessTexture = textureLoader.load('../../assets/textures/door/metalness.jpg')
+    const colorTexture = textureLoader.load(require('../../assets/textures/door/color.jpg'))
+    // const colorTexture = textureLoader.load('https://gw.alicdn.com/imgextra/i4/O1CN01Ow2oCS1m9kEL8DTpD_!!6000000004912-2-tps-16-16.png'))
+    // const alphaTexture = textureLoader.load(require('../../assets/textures/door/alpha.jpg'))
+    // const ambientOcclusionTexture = textureLoader.load(require('../../assets/textures/door/ambientOcclusion.jpg'))
+    // const heightTexture = textureLoader.load(require('../../assets/textures/door/height.jpg'))
+    // const metalnessTexture = textureLoader.load(require('../../assets/textures/door/metalness.jpg'))
 
     // colorTexture.offset.x = 1
     // colorTexture.offset.y = 1

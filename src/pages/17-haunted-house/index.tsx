@@ -18,22 +18,22 @@ function Index() {
 
     // Textures
     const textureLoader = new THREE.TextureLoader()
-    const doorColorTexture = textureLoader.load('../../assets/textures/door2/baseColor.jpg')
-    const doorAmbientOcclusionTexture = textureLoader.load(
-      '../../assets/textures/door2/ambientOcclusion.jpg',
+    const doorColorTexture = textureLoader.load(require('../../assets/textures/door2/baseColor.jpg'))
+    const doorAmbientOcclusionTexture = textureLoader.load(require(
+      '../../assets/textures/door2/ambientOcclusion.jpg'),
     )
-    const doorHeightTexture = textureLoader.load('../../assets/textures/door2/height.png')
-    const doorNormalTexture = textureLoader.load('../../assets/textures/door2/normal.jpg')
-    const doorMetalnessTexture = textureLoader.load('../../assets/textures/door2/metalness.jpg')
-    const doorRoughnessTexture = textureLoader.load('../../assets/textures/door2/roughness.jpg')
+    const doorHeightTexture = textureLoader.load(require('../../assets/textures/door2/height.png'))
+    const doorNormalTexture = textureLoader.load(require('../../assets/textures/door2/normal.jpg'))
+    const doorMetalnessTexture = textureLoader.load(require('../../assets/textures/door2/metalness.jpg'))
+    const doorRoughnessTexture = textureLoader.load(require('../../assets/textures/door2/roughness.jpg'))
 
-    const brickColorTexture = textureLoader.load('../../assets/textures/brick/baseColor.jpg')
-    const brickAmbientOcclusionTexture = textureLoader.load(
-      '../../assets/textures/brick/ambientOcclusion.jpg',
+    const brickColorTexture = textureLoader.load(require('../../assets/textures/brick/baseColor.jpg'))
+    const brickAmbientOcclusionTexture = textureLoader.load(require(
+      '../../assets/textures/brick/ambientOcclusion.jpg'),
     )
-    const brickHeightTexture = textureLoader.load('../../assets/textures/brick/height.png')
-    const brickNormalTexture = textureLoader.load('../../assets/textures/brick/normal.jpg')
-    const brickRoughnessTexture = textureLoader.load('../../assets/textures/door2/roughness.jpg')
+    const brickHeightTexture = textureLoader.load(require('../../assets/textures/brick/height.png'))
+    const brickNormalTexture = textureLoader.load(require('../../assets/textures/brick/normal.jpg'))
+    const brickRoughnessTexture = textureLoader.load(require('../../assets/textures/door2/roughness.jpg'))
     brickColorTexture.repeat.set(3, 3)
     brickAmbientOcclusionTexture.repeat.set(3, 3)
     brickHeightTexture.repeat.set(3, 3)
@@ -52,13 +52,13 @@ function Index() {
     brickNormalTexture.wrapT = THREE.RepeatWrapping
     brickRoughnessTexture.wrapT = THREE.RepeatWrapping
 
-    const floorColorTexture = textureLoader.load('../../assets/textures/floor/baseColor.jpg')
+    const floorColorTexture = textureLoader.load(require('../../assets/textures/floor/baseColor.jpg'))
     const floorAmbientOcclusionTexture = textureLoader.load(
-      '../../assets/textures/floor/ambientOcclusion.jpg',
+      require('../../assets/textures/floor/ambientOcclusion.jpg'),
     )
-    const floorHeightTexture = textureLoader.load('../../assets/textures/floor/height.png')
-    const floorNormalTexture = textureLoader.load('../../assets/textures/floor/normal.jpg')
-    const floorRoughnessTexture = textureLoader.load('../../assets/textures/door2/roughness.jpg')
+    const floorHeightTexture = textureLoader.load(require('../../assets/textures/floor/height.png'))
+    const floorNormalTexture = textureLoader.load(require('../../assets/textures/floor/normal.jpg'))
+    const floorRoughnessTexture = textureLoader.load(require('../../assets/textures/door2/roughness.jpg'))
     floorColorTexture.repeat.set(8, 8)
     floorAmbientOcclusionTexture.repeat.set(8, 8)
     floorHeightTexture.repeat.set(8, 8)
@@ -291,7 +291,7 @@ function Index() {
 
     // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
     const audioLoader = new THREE.AudioLoader()
-    audioLoader.load('../../assets/sounds/ghost.mp3', (buffer) => {
+    audioLoader.load(require('../../assets/sounds/ghost.mp3'), (buffer) => {
       sound.setBuffer(buffer)
       sound.setLoop(true)
       sound.setVolume(0.5)
@@ -301,7 +301,7 @@ function Index() {
     // 创建一个 positional audio 源
     // const soundPositional = new THREE.PositionalAudio(listener)
     // const audioLoaderPositional = new THREE.AudioLoader()
-    // audioLoaderPositional.load('../../assets/sounds/baby-cry.mp3', (buffer) => {
+    // audioLoaderPositional.load(require('../../assets/sounds/baby-cry.mp3', (buffer) => {
     //   soundPositional.setBuffer(buffer)
     //   soundPositional.setRefDistance(20)
     //   soundPositional.setLoop(true)
@@ -312,7 +312,7 @@ function Index() {
 
     const ghostSound = new THREE.PositionalAudio(listener)
     const ghostSoundLoader = new THREE.AudioLoader()
-    ghostSoundLoader.load('../../assets/sounds/horror-ghost-14.wav', (buffer) => {
+    ghostSoundLoader.load(require('../../assets/sounds/horror-ghost-14.wav'), (buffer) => {
       ghostSound.setBuffer(buffer)
       ghostSound.setRefDistance(20)
       ghostSound.setLoop(true)

@@ -19,7 +19,7 @@ function Index() {
 
     // Texture
     const textureLoader = new THREE.TextureLoader()
-    const simpleShadow = textureLoader.load('../../assets/textures/simpleShadow.jpg')
+    const simpleShadow = textureLoader.load(require('../../assets/textures/simpleShadow.jpg'))
 
     /**
      * Objects

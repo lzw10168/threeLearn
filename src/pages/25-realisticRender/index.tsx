@@ -94,7 +94,7 @@ function Index() {
     /**
      * Models
      */
-    gltfLoader.load('../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
+    gltfLoader.load(require('../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf'), (gltf) => {
       gltf.scene.scale.set(8, 8, 8)
       gltf.scene.position.set(0, -3.4, 0)
       gltf.scene.rotation.set(0, Math.PI * 0.5, 0)

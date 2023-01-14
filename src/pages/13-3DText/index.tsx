@@ -45,7 +45,7 @@ function Index() {
       // onLoad回调
       (font) => {
         const textureLoader = new THREE.TextureLoader()
-        const matcapTexture = textureLoader.load('../../assets/textures/matcaps/9.png')
+        const matcapTexture = textureLoader.load(require('../../assets/textures/matcaps/9.png'))
 
         const material = new THREE.MeshMatcapMaterial()
         material.matcap = matcapTexture
