@@ -51,11 +51,6 @@ export default defineConfig({
       component: './09-geometry',
     },
     {
-      name: '09-geometry2',
-      path: '/09-geometry2',
-      component: './09-geometry2',
-    },
-    {
       name: '10-debugUI',
       path: '/10-debugUI',
       component: './10-debugUI',
@@ -67,13 +62,54 @@ export default defineConfig({
     },
     {
       name: '12-materials',
-      path: '/12-materials',
-      component: './12-materials',
-    },
-    {
-      name: '12-materialsEnvironmentMap',
-      path: '/12-materialsEnvironmentMap',
-      component: './12-materialsEnvironmentMap',
+      path: '/12',
+      routes: [
+        {
+          name: 'MeshBasicMaterial',
+          path: '/12/mesh-basic-material',
+          component: './12-materials/A_MeshBasicMaterial',
+        },
+        {
+          name: 'MeshNormalMaterial',
+          path: '/12/mesh-normal-material',
+          component: './12-materials/B_MeshNormalMaterial',
+        },
+        {
+          name: 'MeshMatcapMaterial',
+          path: '/12/mesh-matcap-material',
+          component: './12-materials/C_MeshMatcapMaterial',
+        },
+        {
+          name: 'MeshDepthMaterial',
+          path: '/12/mesh-depth-material',
+          component: './12-materials/D_MeshDepthMaterial',
+        },
+        {
+          name: 'MeshLambertMaterial',
+          path: '/12/mesh-lambert-material',
+          component: './12-materials/E_MeshLambertMaterial',
+        },
+        {
+          name: 'MeshPhongMaterial',
+          path: '/12/mesh-phong-material',
+          component: './12-materials/F_MeshPhongMaterial',
+        },
+        {
+          name: 'MeshToonMaterial',
+          path: '/12/mesh-toon-material',
+          component: './12-materials/G_MeshToonMaterial',
+        },
+        {
+          name: 'MeshStandardMaterial',
+          path: '/12/mesh-standard-material',
+          component: './12-materials/H_MeshStandardMaterial',
+        },
+        {
+          name: 'EnvironmentMap',
+          path: '/12/environment-map',
+          component: './12-materials/I_EnvironmentMap',
+        },
+      ],
     },
     { name: '13-3DText', path: '/13-3DText', component: './13-3DText' },
     { name: '15-lights', path: '/15-lights', component: './15-lights' },

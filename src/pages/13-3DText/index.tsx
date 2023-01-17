@@ -9,8 +9,6 @@ import * as dat from 'lil-gui';
 import stats from '../../utils/stats';
 import { listenResize, setFullScreen } from '../../utils/utils';
 
-console.log('Haoyang Gao 20220602');
-
 function Index() {
   useEffect(() => {
     const defaultSceneColor = 0x512da8;

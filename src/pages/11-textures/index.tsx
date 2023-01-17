@@ -37,27 +37,39 @@ function Index() {
     };
 
     const textureLoader = new THREE.TextureLoader(loadingManager);
-    const colorTexture = textureLoader.load('./assets/textures/door/color.jpg');
-    // const colorTexture = textureLoader.load('https://gw.alicdn.com/imgextra/i4/O1CN01Ow2oCS1m9kEL8DTpD_!!6000000004912-2-tps-16-16.png')
+    // const colorTexture = textureLoader.load(
+    //   'https://gw.alicdn.com/imgextra/i4/O1CN01Ow2oCS1m9kEL8DTpD_!!6000000004912-2-tps-16-16.png',
+    // );
+    const colorTexture = textureLoader.load(
+      './assets/textures/TerrazzoSlab003/TerrazzoSlab003_COL_2K_METALNESS.png',
+    );
+    // const colorTexture = textureLoader.load(
+    //   './assets/textures/door/color.jpg',
+    // );
     // const alphaTexture = textureLoader.load('./assets/textures/door/alpha.jpg')
-    // const ambientOcclusionTexture = textureLoader.load('./assets/textures/door/ambientOcclusion.jpg')
+    // const ambientOcclusionTexture = textureLoader.load(
+    //   './assets/textures/door/ambientOcclusion.jpg',
+    // );
     // const heightTexture = textureLoader.load('./assets/textures/door/height.jpg')
-    // const metalnessTexture = textureLoader.load('./assets/textures/door/metalness.jpg')
-
-    // colorTexture.offset.x = 1
-    // colorTexture.offset.y = 1
-    // colorTexture.wrapS = THREE.MirroredRepeatWrapping
-    // colorTexture.wrapT = THREE.MirroredRepeatWrapping
+    // const metalnessTexture = textureLoader.load(
+    //   './assets/textures/door/metalness.jpg',
+    // );
+    // colorTexture.repeat.x = 3;
+    // colorTexture.repeat.y = 3;
+    // colorTexture.offset.x = 1;
+    // colorTexture.offset.y = 1;
+    // colorTexture.wrapS = THREE.MirroredRepeatWrapping;
+    // colorTexture.wrapT = THREE.MirroredRepeatWrapping;
 
     // colorTexture.offset.x = 0.5
     // colorTexture.offset.y = 0
 
-    // colorTexture.wrapS = THREE.RepeatWrapping
-    // colorTexture.wrapT = THREE.RepeatWrapping
-    // colorTexture.center = new THREE.Vector2(0.5, 0.5)
-    // colorTexture.rotation = Math.PI / 4
+    // colorTexture.wrapS = THREE.RepeatWrapping;
+    // colorTexture.wrapT = THREE.RepeatWrapping;
+    colorTexture.center = new THREE.Vector2(0.5, 0.5);
+    colorTexture.rotation = Math.PI / 4;
 
-    // colorTexture.magFilter = THREE.NearestFilter
+    colorTexture.magFilter = THREE.NearestFilter;
     colorTexture.generateMipmaps = false;
 
     // Canvas
@@ -66,7 +78,10 @@ function Index() {
     // Scene
     const scene = new THREE.Scene();
 
-    const box = new THREE.BoxGeometry(1, 1, 1);
+    const geometry = new THREE.SphereGeometry(1);
+    // const geometry = new THREE.SphereGeometry(1, 32, 32);
+    // const geometry = new THREE.ConeGeometry(1, 1, 32);
+    // const geometry = new THREE.TorusGeometry(1, 0.35, 32, 100);
     const material = new THREE.MeshBasicMaterial({
       // color: 0x607d8b,
       map: colorTexture,
@@ -74,9 +89,9 @@ function Index() {
     // console.log(box.attributes.uv)
 
     // Object
-    const cubeMesh = new THREE.Mesh(box, material);
+    const cubeMesh = new THREE.Mesh(geometry, material);
     scene.add(cubeMesh);
-
+    colorTexture.minFilter = THREE.NearestFilter;
     // Size
     const sizes = {
       width: window.innerWidth - 340,

@@ -2,7 +2,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-param-reassign */
 import { PerspectiveCamera, WebGLRenderer } from 'three';
-
+import { history } from '@umijs/max';
 /**
  * 监听 resize 事件
  */
@@ -67,3 +67,20 @@ export const dbClkfullScreen = (canvas: HTMLElement) => {
     setFullScreen(canvas);
   });
 };
+
+export const sizes = {
+  width: window.innerWidth - 340,
+  height: window.innerHeight - 100,
+};
+
+// 监听url变化
+export const listenUrlChange = (history: any) => {
+  history.listen((location: any) => {
+    // 删除.lil-gui
+    const lilGui = document.querySelector('.lil-gui');
+    if (lilGui) {
+      lilGui.remove();
+    }
+  });
+};
+listenUrlChange(history);
