@@ -5,13 +5,12 @@
 export async function getInitialState(): Promise<{ name: string }> {
   return { name: 'three learn' };
 }
-
 export const layout = () => {
   return {
     // lagout: () => {
     //   return '1212';
     // },
-    logo: './favicon.png',
+    logo: `${location.origin}/favicon.png`,
     menu: {
       locale: false,
     },

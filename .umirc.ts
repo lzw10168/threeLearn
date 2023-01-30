@@ -112,21 +112,27 @@ export default defineConfig({
       ],
     },
     { name: '13-3DText', path: '/13-3DText', component: './13-3DText' },
-    { name: '15-lights', path: '/15-lights', component: './15-lights' },
+    { name: '14-lights', path: '/14-lights', component: './14-lights' },
     {
-      name: '16-shadows',
-      path: '/16-shadows',
-      component: './16-shadows',
-    },
-    {
-      name: '16-shadows-baking',
-      path: '/16-shadows-baking',
-      component: './16-shadows-baking',
-    },
-    {
-      name: '16-shadows-baking-simulation',
-      path: '/16-shadows-baking-simulation',
-      component: './16-shadows-baking-simulation',
+      name: '15-shadows',
+      path: '/15',
+      routes: [
+        {
+          name: 'shadow',
+          path: '/15/shadow',
+          component: './15-shadows/A_Shadows',
+        },
+        {
+          name: 'shadowsBaking',
+          path: '/15/shadowsBaking',
+          component: './15-shadows/B_ShadowsBaking',
+        },
+        {
+          name: 'shadowsBakingSimulation',
+          path: '/15/shadowsBakingSimulation',
+          component: './15-shadows/C_ShadowsBakingSimulation',
+        },
+      ],
     },
     {
       name: '17-haunted-house',

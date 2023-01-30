@@ -1,3 +1,7 @@
+/**
+ * @description: B_ShadowsBaking 烘焙阴影
+ * 阴影贴图是静态的，如果球体或灯光移动，阴影也不会
+ */
 import { useEffect } from 'react';
 import * as THREE from 'three';
 
@@ -18,8 +22,8 @@ function Index() {
 
     // Texture
     const textureLoader = new THREE.TextureLoader();
-    const simpleShadow = textureLoader.load(
-      './assets/textures/simpleShadow.jpg',
+    const bakedShadow = textureLoader.load(
+      '../assets/textures/bakedShadow.jpg',
     );
 
     /**
@@ -35,26 +39,19 @@ function Index() {
       new THREE.SphereGeometry(0.5, 32, 32),
       material,
     );
-    // sphere.castShadow = true
-
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-    plane.rotation.set(-Math.PI / 2, 0, 0);
-    plane.position.set(0, -0.5, 0);
-    // plane.receiveShadow = true
-
-    const shadowPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(1.5, 1.5),
+    // sphere.castShadow = true;
+    //map: bakedShadow 不是动态的，如果球体或灯光移动，阴影也不会
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(5, 5),
       new THREE.MeshBasicMaterial({
-        color: '#000000',
-        transparent: true,
-        alphaMap: simpleShadow,
+        map: bakedShadow,
       }),
     );
+    plane.rotation.set(-Math.PI / 2, 0, 0);
+    plane.position.set(0, -0.5, 0);
+    // plane.receiveShadow = true;
 
-    shadowPlane.rotateX(-Math.PI / 2);
-    shadowPlane.position.y = plane.position.y + 0.01;
-
-    scene.add(sphere, plane, shadowPlane);
+    scene.add(sphere, plane);
 
     /**
      * Lights
@@ -63,7 +60,8 @@ function Index() {
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight('#ffffaa', 0.5);
-    directionalLight.position.set(0, 1.3, 0);
+    directionalLight.position.set(1, 0.75, 1);
+    // directionalLight.castShadow = true;
     scene.add(directionalLight);
 
     // console.log(directionalLight.shadow)
@@ -71,7 +69,6 @@ function Index() {
     const directionalLightHelper = new THREE.DirectionalLightHelper(
       directionalLight,
     );
-    directionalLightHelper.visible = false;
     scene.add(directionalLightHelper);
 
     // Size
@@ -87,10 +84,13 @@ function Index() {
       0.1,
       100,
     );
-    camera.position.set(0.5, 2, 4);
+    camera.position.set(1, 1, 2);
 
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.8;
+    // controls.enabled = false
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -98,26 +98,14 @@ function Index() {
     });
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    // renderer.shadowMap.enabled = true
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     listenResize(sizes, camera, renderer);
-
-    // Clock
-    const clock = new THREE.Clock();
 
     // Animations
     const tick = () => {
       stats.begin();
-      const elapsedTime = clock.getElapsedTime();
-
-      sphere.position.x = Math.sin(elapsedTime) * 1.5;
-      sphere.position.z = Math.cos(elapsedTime) * 1.5;
-      sphere.position.y = Math.abs(Math.sin(elapsedTime * 2.5));
-
-      shadowPlane.position.x = sphere.position.x;
-      shadowPlane.position.z = sphere.position.z;
-      shadowPlane.material.opacity = (1 - sphere.position.y) * 0.6;
 
       controls.update();
 
@@ -159,9 +147,11 @@ function Index() {
       .add(directionalLightHelper, 'visible')
       .name('helper visible')
       .listen();
+    // directionalLightFolder
+    //   .add(directionalLightCameraHelper, 'visible')
+    //   .name('camera helper visible')
+    //   .listen()
     directionalLightFolder.add(directionalLight, 'intensity', 0, 1, 0.001);
-
-    gui.close();
   }, []);
 
   return <canvas id="mainCanvas" className="webgl"></canvas>;

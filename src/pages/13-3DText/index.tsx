@@ -12,7 +12,7 @@ import { listenResize, setFullScreen } from '../../utils/utils';
 function Index() {
   useEffect(() => {
     const defaultSceneColor = 0x512da8;
-    const defaultTextInfo = "Joe G's world!";
+    const defaultTextInfo = "Kyle L's world!";
     const debugObj = {
       sceneColor: defaultSceneColor,
       text: defaultTextInfo,
@@ -46,6 +46,7 @@ function Index() {
         );
 
         const material = new THREE.MeshMatcapMaterial();
+        // 纹理
         material.matcap = matcapTexture;
         // material.wireframe = false
 
@@ -63,6 +64,7 @@ function Index() {
             bevelSegments: 5,
           });
           textGeometry.center();
+          console.log(textGeometry.boundingBox);
           text = new THREE.Mesh(textGeometry, material);
           scene.add(text);
         };
