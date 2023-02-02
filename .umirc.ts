@@ -229,6 +229,11 @@ export default defineConfig({
       path: '/26-codeStructrue',
       component: './26-codeStructrue',
     },
+    {
+      name: 'ScreenShot',
+      path: '/screenshot',
+      component: './ScreenShot',
+    },
   ],
   npmClient: 'pnpm',
 });
