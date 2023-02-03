@@ -54,7 +54,7 @@ function Index() {
         const createText = (textInfo = defaultTextInfo) => {
           const textGeometry = new TextGeometry(textInfo, {
             font,
-            size: 0.5,
+            size: 0.1,
             height: 0.2,
             curveSegments: 12,
             bevelEnabled: true,
@@ -64,7 +64,6 @@ function Index() {
             bevelSegments: 5,
           });
           textGeometry.center();
-          console.log(textGeometry.boundingBox);
           text = new THREE.Mesh(textGeometry, material);
           scene.add(text);
         };

@@ -56,6 +56,11 @@ function Index() {
   const scene = new THREE.Scene();
 
   const { sphere, plane, torus } = genuGeometry(material);
+  // 该aoMap属性（字面意思是“环境遮挡贴图”）将在纹理较暗的地方添加阴影。为了让它起作用，您必须添加我们所说的第二组 UV（有助于在几何体上定位纹理的坐标）。
+
+  // 我们可以像在几何课上那样简单地添加新属性并使用默认uv属性。更简单地说，我们复制了uv属性。
+
+  // 调用这个新属性uv2
   sphere.geometry.setAttribute(
     'uv2',
     new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2),

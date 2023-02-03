@@ -135,9 +135,9 @@ export default defineConfig({
       ],
     },
     {
-      name: '17-haunted-house',
-      path: '/17-haunted-house',
-      component: './17-haunted-house',
+      name: '16-haunted-house',
+      path: '/16-haunted-house',
+      component: './16-haunted-house',
     },
     {
       name: '18-particles',

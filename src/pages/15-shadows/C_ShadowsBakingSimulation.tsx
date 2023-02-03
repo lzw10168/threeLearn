@@ -133,8 +133,8 @@ function Index() {
       spheres.forEach((sphere, i) => {
         sphere.position.x = Math.sin(elapsedTime + i) * 1.5;
         sphere.position.z = Math.cos(elapsedTime + i) * 1.5;
-        sphere.position.y = 0;
-        // sphere.position.y = Math.abs(Math.sin((elapsedTime + i) * 2.5));
+        // sphere.position.y = 0;
+        sphere.position.y = Math.abs(Math.sin((elapsedTime + i) * 2.5));
 
         const shadowPlane = shadowPlanes[i];
         shadowPlane.position.x = sphere.position.x;

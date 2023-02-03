@@ -1,5 +1,5 @@
+// 显示帧率，性能等信息
 import Stats from 'stats.js';
-
 const stats = new Stats();
 stats.dom.style.left = 'auto';
 stats.dom.style.top = '0px';
