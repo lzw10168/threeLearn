@@ -140,24 +140,30 @@ export default defineConfig({
       component: './16-haunted-house',
     },
     {
-      name: '18-particles',
-      path: '/18-particles',
-      component: './18-particles',
+      name: '17-particles',
+      path: '/17-particles',
+      routes: [
+        {
+          name: 'particles',
+          path: '/17-particles/particles',
+          component: './17-particles/A_Particles',
+        },
+        {
+          name: 'particles-animation',
+          path: '/17-particles/particles-animation',
+          component: './17-particles/B_ParticlesAnimation',
+        },
+        {
+          name: 'particles-geometry',
+          path: '/17-particles/particles-geometry',
+          component: './17-particles/C_ParticlesCustomGeometry',
+        },
+      ],
     },
     {
-      name: '18-particlesAnimation',
-      path: '/18-particlesAnimation',
-      component: './18-particlesAnimation',
-    },
-    {
-      name: '18-particlesCustomGeometry',
-      path: '/18-particlesCustomGeometry',
-      component: './18-particlesCustomGeometry',
-    },
-    {
-      name: '19-galaxy-generator',
-      path: '/19-galaxy-generator',
-      component: './19-galaxy-generator',
+      name: '18-galaxy-generator',
+      path: '/18-galaxy-generator',
+      component: './18-galaxy-generator',
     },
     {
       name: '20-raycaster',
