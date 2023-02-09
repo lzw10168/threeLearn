@@ -166,19 +166,30 @@ export default defineConfig({
       component: './18-galaxy-generator',
     },
     {
-      name: '20-raycaster',
-      path: '/20-raycaster',
-      component: './20-raycaster',
+      name: '19-raycaster',
+      path: '/19-raycaster',
+      routes: [
+        {
+          name: 'raycaster',
+          path: '/19-raycaster/A_Raycaster',
+          component: './19-raycaster/A_Raycaster',
+        },
+        {
+          name: 'raycaster_mouse',
+          path: '/19-raycaster/B_RaycasterMouse',
+          component: './19-raycaster/B_RaycasterMouse',
+        },
+        {
+          name: 'raycaster_mouse2',
+          path: '/19-raycaster/C_RaycasterMouse2',
+          component: './19-raycaster/C_RaycasterMouse2',
+        },
+      ],
     },
     {
-      name: '20-raycaster-mouse',
-      path: '/20-raycaster-mouse',
-      component: './20-raycaster-mouse',
-    },
-    {
-      name: '20-raycaster-mouse2',
-      path: '/20-raycaster-mouse2',
-      component: './20-raycaster-mouse2',
+      name: '20-scroll',
+      path: '/20-scroll',
+      component: './20-scroll',
     },
     {
       name: '21-scrollBasedAnimation',
