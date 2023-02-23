@@ -20,6 +20,8 @@ specifiers:
   husky: ^8.0.1
   lil-gui: ^0.16.0
   lint-staged: ^13.0.3
+  lodash-es: ^4.17.21
+  maku.js: ^1.0.6
   portfinder-sync: 0.0.2
   prettier: ^2.7.1
   prettier-plugin-organize-imports: ^2
@@ -43,6 +45,8 @@ dependencies:
   gsap: 3.11.4
   html2canvas: 1.4.1
   lil-gui: 0.16.1
+  lodash-es: 4.17.21
+  maku.js: 1.0.6_three@0.137.5
   portfinder-sync: 0.0.2
   raw-loader: 4.0.2
   stats.js: 0.17.0
@@ -7076,6 +7080,10 @@ packages:
       p-locate: 5.0.0
     dev: false
 
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
+
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: false
@@ -7162,6 +7170,14 @@ packages:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
     dependencies:
       tmpl: 1.0.5
+    dev: false
+
+  /maku.js/1.0.6_three@0.137.5:
+    resolution: {integrity: sha512-hfeJTa75YKZPMyD97/RGRvH6+BzRJi+y6yc9tyIMCWdjH9tf7RtBi4UqtC0BFrJCgSRlZC8Kr2V86eUEvRh7Jw==}
+    peerDependencies:
+      three: '>=0.122.0'
+    dependencies:
+      three: 0.137.5
     dev: false
 
   /map-obj/1.0.1:
