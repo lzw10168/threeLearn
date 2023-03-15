@@ -13,7 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
-    "@umijs/max": "^4.0.42",
+    "@umijs/max": "^4.0.52",
     "antd": "^5.0.0",
     "cannon": "^0.6.2",
     "cannon-es": "^0.19.0",
