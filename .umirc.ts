@@ -197,25 +197,33 @@ export default defineConfig({
       component: './21-scrollBasedAnimation',
     },
     {
-      name: '22-dominoes',
-      path: '/22-dominoes',
-      component: './22-dominoes',
-    },
-    {
-      name: '22-physics',
+      name: '22-physics-物理',
       path: '/22-physics',
-      component: './22-physics',
+
+      routes: [
+        {
+          name: 'physics-初步认识',
+          path: '/22-physics/intro',
+          component: './22-physics-intro/APhysicsIntro.tsx',
+        },
+        {
+          name: 'physics-材料',
+          path: '/22-physics/material',
+          component: './22-physics-intro/BPhysicsMaterial.tsx',
+        },
+        {
+          name: 'physics-外力',
+          path: '/22-physics/force',
+          component: './22-physics-intro/CPhysicsForce.tsx',
+        },
+        {
+          name: 'physics-多个物体',
+          path: '/22-physics/multi',
+          component: './22-physics-intro/DPhysicsMulti.tsx',
+        },
+      ],
     },
-    {
-      name: '22-physics-cannon-es',
-      path: '/22-physics-cannon-es',
-      component: './22-physics-cannon-es',
-    },
-    {
-      name: '22-physics-multi',
-      path: '/22-physics-multi',
-      component: './22-physics-multi',
-    },
+
     {
       name: '23-importModels',
       path: '/23-importModels',

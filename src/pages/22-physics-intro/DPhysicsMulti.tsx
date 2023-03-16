@@ -8,6 +8,7 @@ import * as CANNON from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger';
 import stats from '../../utils/stats';
 import { listenResize } from '../../utils/utils';
+import { matcapTexture4 } from '../12-materials/utils';
 
 // Canvas
 
@@ -54,7 +55,12 @@ function Index() {
      * Objects
      */
     // material
-    const material = new THREE.MeshStandardMaterial();
+    const material = new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: matcapTexture4,
+      envMapIntensity: 0.5,
+    });
 
     // plane
     const plane = new THREE.Mesh(
@@ -111,11 +117,15 @@ function Index() {
     /**
      * Sounds
      */
-    const hitSound = new Audio('./assets/sounds/hit.mp3');
+    const hitSound = new Audio('../assets/sounds/hit.mp3');
     const playHitSound = (collision: { contact: CANNON.ContactEquation }) => {
+      // 冲击力度
       const impactStrength = collision.contact.getImpactVelocityAlongNormal();
+      console.log('impactStrength: ', impactStrength);
       if (impactStrength > 1.5) {
+        // For even more realism, we can add some randomness to the sound volume:
         hitSound.volume = Math.random();
+        // 声音重置
         hitSound.currentTime = 0;
         hitSound.play();
       }
@@ -126,7 +136,9 @@ function Index() {
      */
     const world = new CANNON.World();
     world.gravity.set(0, -9.82, 0);
+    // 默认的 broadphase 是NaiveBroadphase，我建议你切换到SAPBroadphase。使用这个 broadphase 最终会产生不会发生碰撞的错误，但这种情况很少见，并且它涉及到做一些事情，比如非常快速地移动物体。
     world.broadphase = new CANNON.SAPBroadphase(world);
+    // 当Body速度变得非常慢时（在您看不到它移动的点），Body可能会睡着并且不会被测试，除非通过代码对其施加足够的力或者如果另一个Body击中它。要激活此功能，只需将allowSleep属性设置为trueon the World：
     world.allowSleep = true;
 
     const defaultMaterial = new CANNON.Material('default');
