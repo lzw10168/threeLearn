@@ -75,7 +75,7 @@ function Index() {
       // './assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
       (gltf) => {
         console.log('success');
-        console.log(gltf);
+        console.log('gltf', gltf);
         // gltf.scene.scale.set(10, 10, 10)
         // scene.add(gltf.scene)
         const duck = gltf.scene.children[0];

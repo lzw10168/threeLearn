@@ -78,6 +78,8 @@ function Index() {
         console.log('success');
         console.log(gltf);
         model = gltf.scene;
+        // 在处理动画之前，让我们修复比例。如果您查看导入场景的组成，狐狸由一个Object3D组成，它本身由一个Bone和一个SkinnedMesh组成。我们不会解释它们是什么，但想法是我们不应该简单地缩放Object3D。即使它适用于这种情况，它也可能不适用于更复杂的模型。
+        // 我们在这里可以做的是缩放加载的场景并将其直接添加到我们的场景中：
         model.scale.set(0.03, 0.03, 0.03);
         scene.add(model);
 
@@ -97,8 +99,9 @@ function Index() {
         actionSurvey = mixer.clipAction(gltf.animations[0]);
         actionWalk = mixer.clipAction(gltf.animations[1]);
         actionRun = mixer.clipAction(gltf.animations[2]);
+        actionSurvey.setEffectiveWeight(1);
         actionWalk.setEffectiveWeight(0);
-        actionRun.setEffectiveWeight(0);
+        actionRun.setEffectiveWeight(1);
         actionSurvey.play();
         actionWalk.play();
         actionRun.play();

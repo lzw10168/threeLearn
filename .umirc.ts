@@ -225,12 +225,12 @@ export default defineConfig({
     },
 
     {
-      name: '23-importModels',
+      name: '23-导入模型',
       path: '/23-importModels',
       component: './23-importModels',
     },
     {
-      name: '23-importModelsAnimation',
+      name: '23-导入动态模型',
       path: '/23-importModelsAnimation',
       component: './23-importModelsAnimation',
     },
