@@ -1,27 +1,27 @@
-import * as THREE from 'three'
-import Playground from '../Playground'
-import Environment from './Enviroment'
-import Resources from '../utils/Resources'
-import Floor from './Floor'
-import Fox from './Fox'
+import * as THREE from 'three';
+import Playground from '../Playground';
+import Environment from './Enviroment';
+import Resources from '../utils/Resources';
+import Floor from './Floor';
+import Fox from './Fox';
 
 export default class World {
-  playground: Playground
+  playground: Playground;
 
-  scene: THREE.Scene
+  scene: THREE.Scene;
 
-  environment: Environment
+  environment: Environment;
 
-  resources: Resources
+  resources: Resources;
 
-  floor: Floor
+  floor: Floor;
 
-  fox: Fox
+  fox: Fox;
 
   constructor() {
-    this.playground = new Playground()
-    this.scene = this.playground.scene
-    this.resources = this.playground.resources
+    this.playground = new Playground();
+    this.scene = this.playground.scene;
+    this.resources = this.playground.resources;
 
     // Test mesh
     // const testMesh = new THREE.Mesh(
@@ -33,15 +33,16 @@ export default class World {
 
     this.resources.on('ready', () => {
       // Setup
-      this.floor = new Floor()
-      this.fox = new Fox()
-      this.environment = new Environment()
-    })
+      this.floor = new Floor();
+      this.fox = new Fox();
+      // Environment 会去更新场景中的所有材质
+      this.environment = new Environment();
+    });
   }
 
   update() {
     if (this.fox) {
-      this.fox.update()
+      this.fox.update();
     }
   }
 }
