@@ -255,6 +255,11 @@ export default defineConfig({
       component: './26-codeStructrue',
     },
     {
+      name: '27-rtf',
+      path: '/27-rtf',
+      component: './27-rtf',
+    },
+    {
       name: 'ScreenShot',
       path: '/screenshot',
       component: './ScreenShot',
