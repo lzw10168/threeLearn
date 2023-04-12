@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>图像处理示例</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
+  <script src="https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js"></script>
+
+</head>
+<style>
+  img {
+    width: 500px;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    transform-origin: 0 0;
+  }
+
+  canvas {
+    transform-origin: 0 0;
+    position: absolute;
+    /* center */
+    top: 0;
+    left: 0;
+    transform: scale(0.3);
+  }
+
+</style>
+
+<body>
+  <h1>图像处理示例</h1>
+  <img src="./public/1.png" id="imageA" onload="transformBlue()" />
+  <img src="./public/2.png" id="imageB" onload="transformRed()" />
+  <div class="container">
+    <canvas id="canvas1"></canvas>
+    <div class="c2w">
+      <canvas id="canvas2"></canvas>
+    </div>
+  </div>
+  <script>
+    // container监听鼠标滚轮事件放大缩小
+    container = document.querySelector('.container')
+    container.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      // 拿到当前的scale
+      let scale = container.style.transform.match(/scale\((\d+\.?\d*)\)/)
+      console.log('scale: ', scale);
+      if (scale) {
+        scale = +scale[1]
+      } else {
+        scale = 1
+      }
+      console.log('e.deltaY: ', e.deltaY);
+      // 放大缩小
+      if (e.deltaY < 0) {
+        scale += 0.1
+      } else {
+        scale -= 0.1
+      }
+      container.style.transform = `scale(${scale})`
+    })
+
+    var draggie = new Draggabilly('.c2w', {
+      // options...
+    });
+  </script>
+  <script>
+    function transformBlue() {
+      let canvas = document.getElementById("canvas1");
+      let ctx = canvas.getContext("2d");
+      let img = document.getElementById("imageA");
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      // ctx.save();
+      // ctx.scale(0.5, 0.5);
+      ctx.drawImage(img, 0, 0);
+      // ctx.restore();
+
+      // ctx.globalAlpha = 0;
+      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let pixels = imageData.data;
+
+      for (let i = 0; i < pixels.length; i += 4) {
+        // 
+        let r = pixels[i];
+        let g = pixels[i + 1];
+        let b = pixels[i + 2];
+        // todo: 透明度处理
+        if ([r, g, b].every(v => v < 256 && v > 245)) pixels[i + 3] = 0
+        let brightness = (r + g + b) / 3;
+        if (brightness < 250) {
+          // 把颜色在原来基础上,变蓝, 保留原来的透明度
+          pixels[i] = r;
+          pixels[i + 1] = g;
+          pixels[i + 2] = 255;
+
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+    function transformRed() {
+      let canvas = document.getElementById("canvas2");
+      let ctx = canvas.getContext("2d");
+      let img = document.getElementById("imageB");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+
+      // ctx.save();
+      // ctx.scale(0.5, 0.5);
+      ctx.drawImage(img, 0, 0);
+      // ctx.restore();
+      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let pixels = imageData.data;
+      for (let i = 0; i < pixels.length; i += 4) {
+        // 
+        let r = pixels[i];
+        let g = pixels[i + 1];
+        let b = pixels[i + 2];
+        // todo: 透明度处理
+        if ([r, g, b].every(v => v < 256 && v > 245)) pixels[i + 3] = 0
+        let brightness = (r + g + b) / 3;
+        if (brightness < 250) {
+          // 把颜色在原来基础上,变红, 保留原来的透明度
+          pixels[i] = 255;
+          pixels[i + 1] = g;
+          pixels[i + 2] = b;
+
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+  </script>
+</body>
+
+</html>
